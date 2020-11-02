@@ -6,34 +6,40 @@ In this paper, we compare assemblies of PacBio and Nanopore reads with seven ass
 ## Requirements
 
 ### Long-read assemblers
-* [Canu]
-* [Flye]
-* [NextDeNovo]
-* [Ra]
-* [Raven]
-* [Shasta]
-* [wtdbg2]
+* [Canu](https://github.com/marbl/canu)
+* [Flye](https://github.com/fenderglass/Flye)
+* [NextDeNovo](https://github.com/Nextomics/NextDenovo)
+* [Ra](https://github.com/lbcb-sci/ra)
+* [Raven](https://github.com/lbcb-sci/raven)
+* [Shasta](https://github.com/chanzuckerberg/shasta)
+* [wtdbg2](https://github.com/ruanjue/wtdbg2)
 
 ### Haplotigs-purging tools
-* [HaploMerger2]
-* [purge_dups]
-* [purge_haplotigs]
+* [HaploMerger2](https://github.com/mapleforest/HaploMerger2)
+* [purge_dups](https://github.com/dfguan/purge_dups)
+* [purge_haplotigs](https://bitbucket.org/mroachawri/purge_haplotigs/src/master/)
 
 ### Sampling depth subsets
-* [BBmap]
+* [BBmap](https://sourceforge.net/projects/bbmap/)
 
 ### Assembly evaluation
-* [assembly-stats]
-* [BUSCO]
-* [KAT]
-* [tinycov]
-* [HapPy]
+* [assembly-stats](https://github.com/sanger-pathogens/assembly-stats)
+* [BUSCO](https://busco.ezlab.org/)
+* [KAT](https://github.com/TGAC/KAT)
+* [tinycov](https://github.com/cmdoret/tinycov)
+* [HapPy](https://github.com/AntoineHo/Happy)
+
+### Other dependencies
+
+Python packages:
+* Biopython
 
 ## Datasets
 
 We tested assemblies on two long-read datasets for the bdelloid rotifer *Adineta vaga*:
 * PacBio dataset (23.5 Gb, N50 = 11.6 kb) designated as **pacbio_data**
 * Nanopore dataset (17.5 Gb, N50 = 18.8 kb) designated as **ont_data**
+* Illumina dataset (11.4 Gb, 2*250 bp) designated as **illumina_end1** and **illumina_end2**
 
 ## Assembly of full datasets
 
@@ -179,6 +185,46 @@ do
     samtools view out.ctg.bam | wtpoa-cns -d out.ctg.fa -i - -fo wtdbg2_assembly_${i}.fasta
 done
 ```
+
+## Read filtering
+
+The reads were filtered with a python script.
+
+```bash
+python3 filter_reads.py --min 15000 --fasta pacbio_data --out pacbio.min15000.fasta
+python3 filter_reads.py --min 30000 --fasta ont_data --out ont.min30000.fasta  
+```
+
+The assemblies were run on these filtered datasets in the same manner as for assemblies of the full datasets.
+
+## Impact of read-depth
+
+Subsets were randomly sampled from PacBio and Nanopore datasets to reach a certain read-depth. The script **reformat.sh** from BBmap was used to generate these subsets. The target number of bases if based on the estimated haploid genome size of 102.3 Mb. 
+
+```bash
+for i in {1..5}
+do
+    reformat.sh in=pacbio_data out=pacbio.subset.10X.0${i}.fasta samplebasestarget=1023000000
+    reformat.sh in=pacbio_data out=pacbio.subset.20X.0${i}.fasta samplebasestarget=2046000000
+    reformat.sh in=pacbio_data out=pacbio.subset.30X.0${i}.fasta samplebasestarget=3069000000
+    reformat.sh in=pacbio_data out=pacbio.subset.40X.0${i}.fasta samplebasestarget=4092000000
+    reformat.sh in=pacbio_data out=pacbio.subset.50X.0${i}.fasta samplebasestarget=5115000000
+    reformat.sh in=pacbio_data out=pacbio.subset.60X.0${i}.fasta samplebasestarget=6138000000
+    reformat.sh in=pacbio_data out=pacbio.subset.80X.0${i}.fasta samplebasestarget=8184000000
+    reformat.sh in=pacbio_data out=pacbio.subset.100X.0${i}.fasta samplebasestarget=10230000000
+
+    reformat.sh in=ont_data out=ont.subset.10X.0${i}.fasta samplebasestarget=1023000000
+    reformat.sh in=ont_data out=ont.subset.20X.0${i}.fasta samplebasestarget=2046000000
+    reformat.sh in=ont_data out=ont.subset.30X.0${i}.fasta samplebasestarget=3069000000
+    reformat.sh in=ont_data out=ont.subset.40X.0${i}.fasta samplebasestarget=4092000000
+    reformat.sh in=ont_data out=ont.subset.50X.0${i}.fasta samplebasestarget=5115000000
+    reformat.sh in=ont_data out=ont.subset.60X.0${i}.fasta samplebasestarget=6138000000
+    reformat.sh in=ont_data out=ont.subset.80X.0${i}.fasta samplebasestarget=8184000000
+    reformat.sh in=ont_data out=ont.subset.100X.0${i}.fasta samplebasestarget=10230000000
+done
+```
+
+The assemblies were run on these subsets in the same manner as for assemblies of the full datasets. For Canu assemblies, the parameter stopOnLowCoverage was set to 1 to allow runs on low-depth datasets.
 
 ## Assembly evaluation
 
