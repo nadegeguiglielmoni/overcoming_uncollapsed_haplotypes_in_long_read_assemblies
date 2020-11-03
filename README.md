@@ -3,6 +3,15 @@ Supporting scripts for the paper **"Overcoming uncollapsed haplotypes in long-re
 
 In this paper, we compare assemblies of PacBio and Nanopore reads with seven assemblers, and evaluate their efficiency at producing properly collapsed haploid assemblies. We also try to reduce uncollapsed haplotypes by using a subset of filtered reads, and haplotigs-purging tools. We also present the tool [HapPy](https://github.com/AntoineHo/Happy) to evaluate the correct haploid representation of a diploid genome.
 
+## Table of contents
+
+* [Requirements](https://github.com/nadegeguiglielmoni/overcoming_uncollapsed_haplotypes_in_long_read_assemblies/blob/main/README.md#requirements)
+* [Datasets](https://github.com/nadegeguiglielmoni/overcoming_uncollapsed_haplotypes_in_long_read_assemblies/blob/main/README.md#datasets)
+* [Assembly of full datasets](https://github.com/nadegeguiglielmoni/overcoming_uncollapsed_haplotypes_in_long_read_assemblies/blob/main/README.md#assembly-of-full-datasets)
+* [Read filtering](https://github.com/nadegeguiglielmoni/overcoming_uncollapsed_haplotypes_in_long_read_assemblies/blob/main/README.md#read-filtering)
+* [Impact of read-depth](https://github.com/nadegeguiglielmoni/overcoming_uncollapsed_haplotypes_in_long_read_assemblies/blob/main/README.md#impact-of-read-depth)
+* [Assembly evaluation](https://github.com/nadegeguiglielmoni/overcoming_uncollapsed_haplotypes_in_long_read_assemblies/blob/main/README.md#assembly-evaluation)
+
 ## Requirements
 
 ### Long-read assemblers
@@ -22,7 +31,7 @@ In this paper, we compare assemblies of PacBio and Nanopore reads with seven ass
 ### Sampling depth subsets
 * [BBmap](https://sourceforge.net/projects/bbmap/)
 
-### Assembly evaluation
+### Evaluation
 * [assembly-stats](https://github.com/sanger-pathogens/assembly-stats)
 * [BUSCO](https://busco.ezlab.org/)
 * [KAT](https://github.com/TGAC/KAT)
