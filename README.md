@@ -206,6 +206,38 @@ python3 filter_reads.py --min 30000 --fasta ont_data --out ont.min30000.fasta
 
 The assemblies were run on these filtered datasets in the same manner as for assemblies of the full datasets.
 
+## Haplotig purging 
+
+Assemblies were post-processed with HaploMerger2, purge_dups, purge_haplotigs (one replicate per assembler). L, M, H are selected depending on the histogram produced by ```purge_haplotigs hist```.
+
+### PacBio assemblies
+
+```bash
+for i in canu flye ra raven shasta wtdbg2
+do
+    minimap2 -ax map-pb ${i}_assembly_1.fasta pb_data --secondary=no | samtools sort -o ${i}_all.ali.sorted.bam -T tmp.ali
+    samtools index ${i}_all.ali.sorted.bam
+    samtools faidx ${i}_assembly_1.fasta
+    purge_haplotigs hist -b ${i}_all.ali.sorted.bam -g ${i}_assembly_1.fasta
+    purge_haplotigs cov -i ${i}_all.ali.sorted.bam -l L -m M -h H -o ${i}_all.cov_stats.csv
+    purge_haplotigs purge -g ${i}_assembly_1.fasta -c ${i}_all.cov_stats.csv -o ${i}_assembly_1.purged.fasta
+done
+```
+
+### Nanopore assemblies
+
+```bash
+for i in canu flye ra raven shasta wtdbg2
+do
+    minimap2 -ax map-ont ${i}_assembly_1.fasta ont_data --secondary=no | samtools sort -o ${i}_all.ali.sorted.bam -T tmp.ali
+    samtools index ${i}_all.ali.sorted.bam
+    samtools faidx ${i}_assembly_1.fasta
+    purge_haplotigs hist -b ${i}_all.ali.sorted.bam -g ${i}_assembly_1.fasta
+    purge_haplotigs cov -i ${i}_all.ali.sorted.bam -l L -m M -h H -o ${i}_all.cov_stats.csv
+    purge_haplotigs purge -g ${i}_assembly_1.fasta -c ${i}_all.cov_stats.csv -o ${i}_assembly_1.purged.fasta
+done
+```
+
 ## Impact of read-depth
 
 Subsets were randomly sampled from PacBio and Nanopore datasets to reach a certain read-depth. The script **reformat.sh** from BBmap was used to generate these subsets. The target number of bases if based on the estimated haploid genome size of 102.3 Mb. 

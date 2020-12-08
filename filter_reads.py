@@ -17,7 +17,7 @@ def parse_args():
     )
     parser.add_argument(
         "-o",
-        "--output",
+        "--out",
         required=False,
         default="output.fasta",
         help="""Output fasta [default: output.fasta]""",
@@ -30,7 +30,7 @@ def parse_args():
 def main():
     args = parse_args()
     fasta_file = args.fasta
-    output_file = args.output
+    output_file = args.out
     min_len = args.min
 
     record = SeqIO.parse(fasta_file, "fasta")

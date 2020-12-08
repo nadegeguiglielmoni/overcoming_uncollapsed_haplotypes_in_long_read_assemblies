@@ -3,6 +3,8 @@
 # Datasets
 pacbio_data="pacbio_reads.fasta"
 ont_data="nanopore_reads.fasta"
+illumina_end1="illumina.end1.fastq"
+illumina_end2="illumina.end2.fastq"
 
 # Assemblers
 CANU="~/Tools/canu/"
@@ -106,6 +108,12 @@ do
         busco -i ${ONTDIR}/${i}.all.0${j}.fasta -o busco_${i}_${j} -l metazoa_odb10 -m genome
         mv busco_${i}_${j} $ONTDIR
 
+    done
+
+    for j in {1..5}
+    do 
+        kat -o kat_all_${i}_0${j} 'illumina_end1 illumina_end1' ${PBDIR}/${i}.all.0${j}.fasta
+        kat -o kat_all_${i}_0${j} 'illumina_end1 illumina_end1' ${ONTDIR}/${i}.all.0${j}.fasta
     done
 
 done
