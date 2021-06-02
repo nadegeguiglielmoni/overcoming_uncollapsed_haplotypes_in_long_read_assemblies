@@ -1,7 +1,7 @@
 # Overcoming uncollapsed haplotypes in long-read assemblies of non-model organisms
 Supporting scripts for the paper **"Overcoming uncollapsed haplotypes in long-read assemblies of non-model organisms"** by Guiglielmoni et al., available in [bioRxiv](https://www.biorxiv.org/content/10.1101/2020.03.16.993428v1). 
 
-In this paper, we compare assemblies of PacBio and Nanopore reads with seven assemblers, and evaluate their efficiency at producing properly collapsed haploid assemblies. We also try to reduce uncollapsed haplotypes by using a subset of filtered reads, and haplotigs-purging tools. We also present the tool [HapPy](https://github.com/AntoineHo/Happy) to evaluate the correct haploid representation of a diploid genome.
+In this paper, we compare assemblies of PacBio and Nanopore reads with seven assemblers, and evaluate their efficiency at producing properly collapsed haploid assemblies. We also try to reduce uncollapsed haplotypes by using a subset of filtered reads, and haplotig-purging tools. We also present the tool [HapPy](https://github.com/AntoineHo/Happy) to evaluate the correct haploid representation of a diploid genome.
 
 ## Table of contents
 
